@@ -1,10 +1,6 @@
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const express = require('express');
-
-const app = express();
-const PORT = 8000;
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
@@ -64,16 +60,6 @@ client.on(Events.InteractionCreate, async interaction => {
             ephemeral: true 
         });
     }
-});
-
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.status(200).send('OK');
-});
-
-// Start the HTTP server alongside your bot
-app.listen(PORT, () => {
-  console.log(`Health check server running on port ${PORT}`);
 });
 
 // Login
