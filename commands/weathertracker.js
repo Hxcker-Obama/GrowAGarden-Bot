@@ -162,35 +162,36 @@ module.exports = {
 
         const data = await response.json();
         const weatherData = data.weather || [];
-
-        // Count active events
         const activeEvents = weatherData.filter(event => event.active).length;
-
+    
         // Create embed
         const embed = new EmbedBuilder()
             .setTitle('⛅ Current Weather Events (Auto-Updating)')
             .setColor(0x87CEEB)
             .setTimestamp();
 
-        // Add weather event fields
-        weatherData.forEach(event => {
+        // Create single field with all weather events
+        const weatherList = weatherData.map(event => {
             const emoji = weatherEmojiMappings[event.weather_name] || '⛈️';
             const status = event.active ? 
-                `✅ Active (Duration: ${event.duration}s)` : 
+                `✅ Active (${event.duration}s)` : 
                 `❌ Inactive`;
-            
+        
             const startTime = event.start_duration_unix > 0 ? 
-                `\nStarted: <t:${event.start_duration_unix}:R>` : '';
+                ` | Started: <t:${event.start_duration_unix}:R>` : '';
             const endTime = event.end_duration_unix > 0 ? 
-                `\nEnds: <t:${event.end_duration_unix}:R>` : '';
+                ` | Ends: <t:${event.end_duration_unix}:R>` : '';
 
-            embed.addFields({
-                name: `${emoji} ${event.weather_name}`,
-                value: `${status}${startTime}${endTime}`,
-                inline: true
-            });
+            return `${emoji} **${event.weather_name}**: ${status}${startTime}${endTime}`;
+        }).join('\n');
+
+        // Add the single field with all weather events
+        embed.addFields({
+            name: 'All Weather Events',
+            value: weatherList.length > 0 ? weatherList : 'No weather events found',
+            inline: false
         });
-
+    
         // Add summary field
         embed.addFields({
             name: 'Summary',
