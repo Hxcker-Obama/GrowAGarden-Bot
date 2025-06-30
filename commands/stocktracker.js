@@ -7,7 +7,8 @@ const activeTrackers = new Map();
 const previousStockStates = new Map();
 
 // Role mappings from roles.json
-const roleMappings = {
+const roleMappings = {};
+const oldRoleMappings = {
     "seed_stock": {
         "Beanstalk": "1378079580627275786",
         "Cacao": "1378080651911364649",
