@@ -11,6 +11,10 @@ module.exports = {
 
     const channel = interaction.channel;
     try {
+      if (interaction.user.id != 973159740303638549) {
+            await interaction.editReply('❌ Unauthorized User!');
+            return;
+      }
       // Fetch all messages in the channel
       const messages = await channel.messages.fetch({ limit: 100 });
       
